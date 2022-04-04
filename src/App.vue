@@ -1,13 +1,23 @@
 <template>
   <div>
-    <h1 
-      :class="{ active : isActive }"
-      @click="activate()">Hello?!({{ isActive }})</h1>
+    <h1>{{msg}}</h1>
+    <input type="text"
+      v-model="msg"
+    >
+    <h1>{{checked}}</h1>
+    <input type="checkbox" v-model="checked">
+    
+    <!-- <template v-if="isShow">
+      <h1>Title</h1>
+      <p>Paragraph 1</p>
+      <p>Paragraph 2</p>
+    </template> -->
   </div>
 </template>
 
 <script>
   // import Fruits from './components/Fruits'
+  import shortid from 'shortid'
   export default {
     components :{
       // Fruits
@@ -15,8 +25,20 @@
     data(){
       return {
         // Getter, Setter
-        msg: 'Hello Computed',
-        isActive: false
+        msg: 'Hello world',
+        isActive: false,
+        fontStyle:{
+          color:'orange',
+          fontSize:'30px' 
+        },
+        backgroundStyle:{
+          backgroundColor:'black'
+        },
+        isShow:false,
+        count:0,
+        fruits:['Apple','Banan','Cherry'],
+        checked:false
+
       }
     },
     computed: {
@@ -26,14 +48,23 @@
       // }
       revesedMessage () {
         return this.msg.split('').reverse().join('')
+      },
+      newFruits(){
+        return this.fruits.map(fruit => ({
+          id:shortid.generate(),
+          name:fruit
+        }))
       }
     },
     watch:{
-      msg(newValue){
-        console.log('msg watch: ',newValue)
-      },
-      revesedMessage(){
-        console.log(this.revesedMessage)
+      // msg(newValue){
+      //   console.log('msg watch: ',newValue)
+      // },
+      // revesedMessage(){
+      //   console.log(this.revesedMessage)
+      // }
+      msg(){
+        console.log(this.msg.trim())
       }
     },
     methods: {
@@ -42,6 +73,22 @@
       },
       activate() {
         this.isActive = !this.isActive
+      },
+      changeStyle(){
+        this.fontStyle.color='red'
+        this.fontStyle.fontSize ='50px'
+      },
+      handler(){
+          // this.isShow = !this.isShow
+          // this.count += 1
+          console.log('msg,e')
+      },
+      handlerA(){
+        console.log('Enter!!')
+        
+      },
+      handlerB(){
+        console.log('child')
       }
     }
     
@@ -52,5 +99,21 @@
   .active {
     color: red;
     font-weight: bold;
+  }
+  .color {
+    width: 300px;
+    height: 300px;
+  }
+  .parent {
+    width: 200px;
+    height: 100px;
+    background-color: royalblue;
+    padding: 10px;
+    overflow: auto;
+    .child {
+      width: 100px;
+      height: 2000px;
+      background-color: orange;
+    }
   }
 </style>

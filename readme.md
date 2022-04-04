@@ -33,3 +33,58 @@ computed :{
   }
 }
 ```
+
+### v-if & v-show
+
+v-if는 조건부 렌더링  
+초기 렌더링시 조건이 false면 아무 작업도 하지 않음(렌더링 안됨)  
+조건부 블록은 조건이 true가 될 때가지 렌더링 되지 않음
+
+v-show는 초기 조건과 관계없이 항상 렌더링 됨
+
+v-if는 전환비용이 놓고 v-show는 초기 렌더링 비용이 높다
+자주 변환해야 한다면 v-show 사용
+
+### 고유한 아이디 생성 패키지
+
+```
+$ npm i -D shortid
+```
+```js
+  newFruits(){
+        return this.fruits.map(fruit => ({
+          id:shortid.generate(),
+          name:fruit
+        }))
+```
+
+### 이벤트 수식어
+```
+@event.prevent.once 체이닝 가능
+.stop 이벤트 전파 중단
+.prevent html 기본 이벤트 중단
+.capture
+.self
+.once
+.passive 
+```
+- 이벤트 버블링
+어떤 요소를 선택했을때 그 요소를 포함하는 부모 요소에도
+이벤트가 전파 되는 것
+- 이벤트 캡쳐링
+부모요소에서 자식요소로 이벤트가 내려오는 것
+
+### v-model 
+양방향 데이터 바인딩
+```html
+<input type="text" v-model="msg" />
+```
+v-model은 한글 작성시 글자가 한박자 느리게 반응  
+따라서 이벤트객체 타겟에 바로 할당 하게 코드 작성
+
+```html
+<input type="text" :value="msg" @input="msg = $event.target.value>
+```
+v-model.lazy 인풋박스에 포커스가 해제되면 반응함
+v-model.number 숫자데이터를 받아야할때
+v-model.trim 데이터 앞뒤쪽 공백문자 제거
