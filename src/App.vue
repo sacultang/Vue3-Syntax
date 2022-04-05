@@ -1,31 +1,61 @@
 <template>
   <div>
-    <h1>{{msg}}</h1>
+    <!-- <h1>{{msg}}</h1>
     <input type="text"
       v-model="msg"
     >
     <h1>{{checked}}</h1>
-    <input type="checkbox" v-model="checked">
+    <input type="checkbox" v-model="checked"> -->
+    <!-- <MyBtn class="heropy" @heropy="log" @changeMsg="logMsg">
+      <template #text>
+        <span style="color:red;">Banana</span>
+      </template>
+      <template #icon>
+        <span style="color:red;">(B)</span>
+      </template>
+      
+    </MyBtn> -->
+
     
     <!-- <template v-if="isShow">
       <h1>Title</h1>
       <p>Paragraph 1</p>
       <p>Paragraph 2</p>
     </template> -->
+    <!-- <h1 ref="hello">
+      Hello world!
+    </h1> -->
+    <Hello ref="hello"></Hello>
   </div>
 </template>
 
 <script>
   // import Fruits from './components/Fruits'
+  import Hello from '~/components/Hello'
+  import MyBtn from '~/components/MyBtn.vue'
+  import Parent from '~/components/Parent'
+  import { computed } from 'vue'
   import shortid from 'shortid'
   export default {
+    
     components :{
       // Fruits
+      MyBtn,
+      Parent,
+      Hello
+      // Child
+    },
+    created(){
+      console.log(this.$refs.hello)
+    },
+    mounted (){
+      const h1El = this.$refs.hello
+      console.log(h1El.$refs.good)
     },
     data(){
       return {
         // Getter, Setter
-        msg: 'Hello world',
+        // msg: 'Hello world',
         isActive: false,
         fontStyle:{
           color:'orange',
@@ -37,10 +67,19 @@
         isShow:false,
         count:0,
         fruits:['Apple','Banan','Cherry'],
-        checked:false
-
+        checked:false,
+        color:'#000',
+        message:'Hello World'
       }
     },
+    provide(){
+      return {
+        msg: computed(() => {
+          return this.message
+        })
+      }
+    }
+    ,
     computed: {
       // Getter
       // revesedMessage(){
@@ -89,6 +128,13 @@
       },
       handlerB(){
         console.log('child')
+      },
+      log(e){
+        console.log('click')
+        console.log(e)
+      },
+      logMsg(msg){
+        console.log(msg)
       }
     }
     

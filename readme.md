@@ -88,3 +88,28 @@ v-model은 한글 작성시 글자가 한박자 느리게 반응
 v-model.lazy 인풋박스에 포커스가 해제되면 반응함
 v-model.number 숫자데이터를 받아야할때
 v-model.trim 데이터 앞뒤쪽 공백문자 제거
+
+### <slot></slot>
+속성 상속
+
+컴포넌트 안에
+```js
+  export default {
+    inheritAttrs:false, //상속받지 않겠다
+
+  }
+```
+
+### emits
+컴포넌트에 이벤트 전달
+
+컴포넌트 안에
+```js
+  <h1 @click="$emit('이벤트이름', $event)"></h1>
+
+  export default {
+    emits:[
+      '이벤트이름'
+    ]
+  }
+```
