@@ -89,7 +89,7 @@ v-model.lazy 인풋박스에 포커스가 해제되면 반응함
 v-model.number 숫자데이터를 받아야할때
 v-model.trim 데이터 앞뒤쪽 공백문자 제거
 
-### <slot></slot>
+### \<slot>\</slot>
 속성 상속
 
 컴포넌트 안에
