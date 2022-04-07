@@ -91,25 +91,129 @@ v-model.trim 데이터 앞뒤쪽 공백문자 제거
 
 ### \<slot>\</slot>
 속성 상속
-
+최상위 요소가 2개일 경우 적용이 안됨  
 컴포넌트 안에
 ```js
   export default {
     inheritAttrs:false, //상속받지 않겠다
-
   }
 ```
+속성 직접적 연결
+```html
+  <h1 :class="$attrs.class">원하는 요소에 연결</h1> //속성 하나하나 연결
+  <h1 v-bind="$attrs"></h1> // 속성 전부 연결 * :가 아닌 v-bind 사용
+```
+### 이름을 갖는 slot
+순서를 보장해줄 수 있음
+```html
+상위 컴포넌트에서 v-slot:이름으로 지정
+<template v-slot:icon>(B)</template> 
+<template v-slot:text>Banana</template>
 
+v-slot 약어 #
+<template #icon>(B)</template> 
+<template #text>Banana</template>
+
+하위 컴포넌트에서 name="지정한 이름"으로 받음
+<slot name="text"></slot>
+<slot name="icon"></slot>
+
+출력 결과 
+<slot>의 순서에 의해 Banana(B)가 출력
+```
 ### emits
 컴포넌트에 이벤트 전달
-
+최상위 요소가 2개일 경우 적용이 안됨 
 컴포넌트 안에
 ```js
-  <h1 @click="$emit('이벤트이름', $event)"></h1>
+  <Mybtn @이벤트이름 ='log'></Mybtn>
+  <h1 @click ="$emit('이벤트이름', $event)"></h1>
 
   export default {
     emits:[
       '이벤트이름'
     ]
+  }
+```
+
+### Provide / Inject
+
+App > Parent > Child 로 데이터를 넘겨주기위해  
+Parent 컴포넌트에 props를 정의 해야함  
+매개체 없이 App > Child로 전달하기 위해 provide / inject 사용  
+반응성을 가지지 않기 때문에 반응성을 가지려면 computed를 사용해야함
+
+```js
+  App.vue에 작성
+  provide (){
+    return {
+      msg: computed(() => {
+          return this.message
+        })
+    }
+  }
+
+  parent에 props를 전달해줄 필요가 없음
+
+  Child.vue에 작성
+  inject :[
+    'msg'
+  ]
+```
+computed
+```js
+App.vue
+import { computed } from 'vue'
+  provide() {
+    return {
+      msg: computed(()=>{
+        return this.message
+      })
+    }
+  }
+
+Child.vue 
+msg에서 내보낸 데이터는 계산된 객체 데이터기때문에 value 속성으로 값을 출력
+<h1>{{msg.value}}</h1>
+```
+
+### ref
+
+```
+  <h1 ref="hello> Hello World </h1>
+```
+```js
+  export default {
+    created(){ //컴포넌트가 생성된 직후기 때문에 undefined
+      console.log(this.$refs.hello)
+    },
+    mounted(){ // 컴포넌트가 HTML에 연결된 후기 때문에 참조 가능
+      console.log(this.$refs.hello)
+    }
+  }
+```
+컴포넌트를 참조할때는 $el 속성을 적어줘야함
+```js
+  export default {
+    mounted(){ // 컴포넌트가 HTML에 연결된 후기 때문에 참조 가능
+      console.log(this.$refs.hello.$el) //컴포넌트의 최상위 요소 참조
+    }
+    mounted(){ // 컴포넌트가 HTML에 연결된 후기 때문에 참조 가능
+      console.log(this.$refs.hello.$el) //컴포넌트의 최상위 요소 참조
+    }
+  }   
+
+Hello.vue
+  <template>
+    <div>
+      <h1>Hello</h1>
+      <h1 ref="good">Hello</h1>
+    </div>
+  </template>
+
+  export default {
+    mounted(){ // 컴포넌트가 HTML에 연결된 후기 때문에 참조 가능
+      console.log(this.$refs.hello.$refs.good) //지정한 요소 참조
+    }
   }
 ```
